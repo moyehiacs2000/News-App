@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "55448606164",
+    "project_id": "news-app-d157d",
+    "storage_bucket": "news-app-d157d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55448606164:android:cc013ee5a9876c5eea7241",
+        "android_client_info": {
+          "package_name": "com.moyehics.news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55448606164-jgblqdpsi0fjtfj3ld8qnh5oe2tubv9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXi0aJD74BrY_y329AYNE5jSc5fWsXxzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55448606164-jgblqdpsi0fjtfj3ld8qnh5oe2tubv9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

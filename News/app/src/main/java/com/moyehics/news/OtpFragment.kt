@@ -6,27 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.moyehics.news.databinding.FragmentForgotPasswordBinding
 import com.moyehics.news.databinding.FragmentLoginBinding
-import com.moyehics.news.databinding.FragmentSplashBinding
+import com.moyehics.news.databinding.FragmentOtpBinding
 
-
-class LoginFragment : Fragment() {
-    private var _binding: FragmentLoginBinding? = null
+class OtpFragment : Fragment() {
+    private var _binding: FragmentOtpBinding? = null
     private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentLoginBinding.inflate(inflater,container,false)
-        binding.txtDoNotHaveAcount.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-        }
-        binding.txtrememberPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
-        }
-        binding.loginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_coreFragment)
+        _binding = FragmentOtpBinding.inflate(inflater,container,false)
+        binding.submitButton.setOnClickListener {
+            findNavController().navigate(R.id.action_otpFragment_to_resetPasswordFragment)
         }
         val view = binding.root
         return view
