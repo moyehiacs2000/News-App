@@ -7,13 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.adapter.OnBordiingViewPagerAdapter
 import com.moyehics.news.databinding.FragmentOnboardingBinding
-import com.moyehics.news.databinding.FragmentSplashBinding
-import com.moyehics.news.models.OnBordingData
+import com.moyehics.news.data.model.OnBordingData
 
 class OnboardingFragment : Fragment() {
     private var _binding: FragmentOnboardingBinding? = null

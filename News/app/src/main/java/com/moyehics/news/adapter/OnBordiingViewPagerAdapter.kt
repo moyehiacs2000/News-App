@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.viewpager.widget.PagerAdapter
 import com.moyehics.news.R
-import com.moyehics.news.models.OnBordingData
+import com.moyehics.news.data.model.OnBordingData
 
 class OnBordiingViewPagerAdapter(private var context: Context,private var onBordingDataList : List<OnBordingData>) : PagerAdapter() {
     override fun getCount(): Int {
