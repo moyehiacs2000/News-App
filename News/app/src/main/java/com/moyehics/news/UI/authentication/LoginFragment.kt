@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentLoginBinding
+import com.moyehics.news.util.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,8 +40,19 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loginUser()
-        viewModel.user.observe(viewLifecycleOwner){
-            Log.i("LOGIN",it)
+        viewModel.user.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loding ->{
+                    Log.e("LOGIN","Loading...")
+                }
+                is UiState.Failure ->{
+                    Log.e("LOGIN",state.error.toString())
+
+                }
+                is UiState.Success ->{
+                    Log.e("LOGIN",state.data)
+                }
+            }
         }
     }
     override fun onDestroyView() {
