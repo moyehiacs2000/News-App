@@ -1,4 +1,4 @@
-package com.moyehics.news.UI.authentication
+package com.moyehics.news.ui.authentication
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentOtpBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OtpFragment : Fragment() {
     private var _binding: FragmentOtpBinding? = null
     private val binding get() = _binding!!

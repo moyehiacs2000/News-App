@@ -1,4 +1,4 @@
-package com.moyehics.news.UI
+package com.moyehics.news.ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentSplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SplashFragment : Fragment() {
     private var _binding:FragmentSplashBinding? = null
     private val binding get() = _binding!!

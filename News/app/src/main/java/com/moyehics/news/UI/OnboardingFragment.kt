@@ -1,4 +1,4 @@
-package com.moyehics.news.UI
+package com.moyehics.news.ui
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,7 +12,9 @@ import com.moyehics.news.R
 import com.moyehics.news.adapter.OnBordiingViewPagerAdapter
 import com.moyehics.news.databinding.FragmentOnboardingBinding
 import com.moyehics.news.data.model.OnBordingData
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class OnboardingFragment : Fragment() {
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!

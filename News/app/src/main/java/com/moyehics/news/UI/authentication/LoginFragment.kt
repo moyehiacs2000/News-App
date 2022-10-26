@@ -1,6 +1,7 @@
-package com.moyehics.news.UI.authentication
+package com.moyehics.news.ui.authentication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +34,14 @@ class LoginFragment : Fragment() {
         }
         val view = binding.root
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loginUser()
+        viewModel.user.observe(viewLifecycleOwner){
+            Log.i("LOGIN",it)
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

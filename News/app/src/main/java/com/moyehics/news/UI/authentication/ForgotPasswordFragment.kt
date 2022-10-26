@@ -1,4 +1,4 @@
-package com.moyehics.news.UI.authentication
+package com.moyehics.news.ui.authentication
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentForgotPasswordBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ForgotPasswordFragment : Fragment() {
     private var _binding: FragmentForgotPasswordBinding? = null
     private val binding get() = _binding!!

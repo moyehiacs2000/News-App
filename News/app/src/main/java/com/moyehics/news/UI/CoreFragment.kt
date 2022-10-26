@@ -1,14 +1,14 @@
-package com.moyehics.news.UI
+package com.moyehics.news.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentCoreBinding
-import com.moyehics.news.databinding.FragmentSplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CoreFragment : Fragment() {
     private var _binding: FragmentCoreBinding? = null
     private val binding get() = _binding!!

@@ -1,9 +1,11 @@
-package com.moyehics.news.UI
+package com.moyehics.news.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.moyehics.news.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

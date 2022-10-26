@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.moyehics.news.UI.SplashFragment"
+        android:name="com.moyehics.news.ui.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash" >
         <action
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.moyehics.news.UI.OnboardingFragment"
+        android:name="com.moyehics.news.ui.OnboardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.moyehics.news.UI.authentication.LoginFragment"
+        android:name="com.moyehics.news.ui.authentication.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -43,12 +43,12 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.moyehics.news.UI.authentication.RegisterFragment"
+        android:name="com.moyehics.news.ui.authentication.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" />
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.moyehics.news.UI.authentication.ForgotPasswordFragment"
+        android:name="com.moyehics.news.ui.authentication.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password" >
         <action
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/otpFragment"
-        android:name="com.moyehics.news.UI.authentication.OtpFragment"
+        android:name="com.moyehics.news.ui.authentication.OtpFragment"
         android:label="fragment_otp"
         tools:layout="@layout/fragment_otp" >
         <action
@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/resetPasswordFragment"
-        android:name="com.moyehics.news.UI.authentication.ResetPasswordFragment"
+        android:name="com.moyehics.news.ui.authentication.ResetPasswordFragment"
         android:label="fragment_reset_password"
         tools:layout="@layout/fragment_reset_password" >
         <action
