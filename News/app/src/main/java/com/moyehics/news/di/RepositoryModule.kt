@@ -2,8 +2,11 @@ package com.moyehics.news.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.moyehics.news.data.repository.AuthenticationRepository
-import com.moyehics.news.data.repository.AuthenticationRepositoryImp
+import com.moyehics.news.data.repository.authentication.AuthenticationRepository
+import com.moyehics.news.data.repository.authentication.AuthenticationRepositoryImp
+import com.moyehics.news.data.repository.news.NewRepository
+import com.moyehics.news.data.repository.news.NewRepositoryImp
+import com.moyehics.news.network.NewsInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,7 +20,15 @@ object RepositoryModule {
     fun provideAuthRepository(
         database: FirebaseFirestore,
         auth : FirebaseAuth
-    ): AuthenticationRepository{
+    ): AuthenticationRepository {
         return AuthenticationRepositoryImp(auth,database)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNewsRepository(
+         api: NewsInterface
+    ): NewRepository {
+        return NewRepositoryImp(api)
     }
 }

@@ -24,6 +24,13 @@ class LoginFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater,container,false)
+
+        val view = binding.root
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.txtDoNotHaveAcount.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
@@ -31,30 +38,11 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
         }
         binding.loginButton.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_coreFragment)
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
         }
-        val view = binding.root
-        return view
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.loginUser()
-        viewModel.user.observe(viewLifecycleOwner){ state ->
-            when(state){
-                is UiState.Loding ->{
-                    Log.e("LOGIN","Loading...")
-                }
-                is UiState.Failure ->{
-                    Log.e("LOGIN",state.error.toString())
-
-                }
-                is UiState.Success ->{
-                    Log.e("LOGIN",state.data)
-                }
-            }
-        }
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
