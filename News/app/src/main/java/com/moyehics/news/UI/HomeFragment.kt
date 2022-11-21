@@ -1,44 +1,64 @@
 package com.moyehics.news.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.moyehics.news.R
+import com.moyehics.news.adapter.NewsAdapter
+import com.moyehics.news.data.model.news.Article
 import com.moyehics.news.databinding.FragmentHomeBinding
-import com.moyehics.news.util.UiState
-import com.moyehics.news.util.toast
+import com.moyehics.news.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    val TAG:String="HomeFragment"
+    //val TAG:String="HomeFragment"
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    val viewModel : NewsViewModel by viewModels()
+    private val viewModel : NewsViewModel by viewModels()
+    lateinit var newsAdapter:NewsAdapter
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater,container,false)
-        val view = binding.root
-        return view
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observer()
-        viewModel.getNews("tesla","b8869d637b0c4f4cae3021e6967b369f")
+        setUpRecyclerView()
+        viewModel.getNews("general", Api.API_kEY)
+        newsAdapter.setOnItemClicListener {
+            val bundle = Bundle().apply {
+                putString("article",it.url)
+            }
+            findNavController().navigate(R.id.action_homeFragment_to_articleFragment,bundle)
+        }
 
     }
+    private fun setUpRecyclerView() {
+        val context = requireContext()
+        newsAdapter = NewsAdapter(context)
+        binding.cityRecyclerView?.adapter=newsAdapter
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = RecyclerView.VERTICAL
+        binding.cityRecyclerView?.layoutManager=layoutManager
 
+    }
     private fun observer() {
         viewModel.news.observe(viewLifecycleOwner){ state->
             when(state){
                 is UiState.Loding ->{
-                    toast("Loading...")
+                    binding.cityRecyclerView.gone()
+                    binding.shammerCityRecyclerView.show()
                 }
                 is UiState.Failure->{
                     state.error?.let {
@@ -46,8 +66,9 @@ class HomeFragment : Fragment() {
                     }
                 }
                 is UiState.Success ->{
-                    toast(state.data.articles.get(0).description)
-                    Log.d(TAG,state.data.toString())
+                   newsAdapter.differ.submitList(state.data.articles)
+                    binding.cityRecyclerView.show()
+                    binding.shammerCityRecyclerView.gone()
                 }
             }
         }

@@ -16,15 +16,18 @@
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout-xhdpi/activity_main.xml" value="0.2046875" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout-xxhdpi/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/activity_main.xml" value="0.22982456140350876" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_article.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_forgot_password.xml" value="0.27291666666666664" />
-        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_home.xml" value="0.12552083333333333" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_login.xml" value="0.2" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_onboarding.xml" value="0.40746500777604977" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_otp.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_register.xml" value="0.33" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_reset_password.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_splash.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/news_card_item.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/onbording_screen_item.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/shimmer_news_card_item.xml" value="0.22393162393162394" />
       </map>
     </option>
   </component>

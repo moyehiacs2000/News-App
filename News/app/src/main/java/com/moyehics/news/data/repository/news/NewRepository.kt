@@ -7,7 +7,8 @@ import retrofit2.http.Query
 
 interface NewRepository {
     suspend fun getNews(
-        q :String,
+        category :String,
+        page :Int,
         apikey:String,
         result:(UiState<News>)->Unit
     )

@@ -10,11 +10,12 @@ import retrofit2.Response
 
 class NewRepositoryImp(val api:NewsInterface) : NewRepository {
     override suspend fun getNews(
-        q: String,
+        category: String,
+        page: Int,
         apikey: String,
         result: (UiState<News>) -> Unit
     ) {
-        var res=api.getNews(q,apikey)
+        var res=api.getNews(category,page,apikey)
         if(res.isSuccessful){
             if(res.body() != null){
                 result.invoke(UiState.Success(res.body()!!))
