@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moyehics.news.data.model.news.News
 import com.moyehics.news.data.repository.news.NewRepository
+import com.moyehics.news.util.Api
 import com.moyehics.news.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +17,11 @@ class NewsViewModel @Inject constructor(
     val repository:NewRepository
 ): ViewModel() {
     private var _news = MutableLiveData<UiState<News>>()
-    private var newsResponse : News ?= null
-    private var newsPage =1
+    var newsResponse : News ?= null
+    var newsPage =1
+    init {
+        getNews("general", Api.API_kEY)
+    }
 
     val news : LiveData<UiState<News>>
         get()=_news
@@ -53,6 +57,7 @@ class NewsViewModel @Inject constructor(
                 }
             }
             else -> {
+
                 return it
             }
         }

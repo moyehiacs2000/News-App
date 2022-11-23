@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.moyehics.news.R
 import com.moyehics.news.data.model.User
 import com.moyehics.news.databinding.FragmentRegisterBinding
+import com.moyehics.news.ui.MainActivity
 import com.moyehics.news.util.*
 import dagger.hilt.android.AndroidEntryPoint
 

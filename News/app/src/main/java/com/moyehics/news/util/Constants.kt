@@ -5,5 +5,9 @@ object FireStoreCollection {
 }
 object Api{
     val BASE_URL="https://newsapi.org/v2/"
-    val API_kEY="b8869d637b0c4f4cae3021e6967b369f"
+    val API_kEY="e94406e9cc774eaca039510ce10acb12"
 }
+object Constants{
+    val QUERY_PAGE_SIZE = 20
+}
+

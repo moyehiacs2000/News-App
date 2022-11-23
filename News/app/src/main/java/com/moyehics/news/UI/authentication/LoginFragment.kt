@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentLoginBinding
+import com.moyehics.news.ui.MainActivity
 import com.moyehics.news.util.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private var isLogin = false
     val viewModel : AuthenticationViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +26,6 @@ class LoginFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentLoginBinding.inflate(inflater,container,false)
-
         val view = binding.root
         return view
     }
@@ -39,6 +40,8 @@ class LoginFragment : Fragment() {
         }
         binding.loginButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+            isLogin =true
+
         }
 
     }
@@ -46,6 +49,9 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        if (isLogin){
+            (requireActivity()as MainActivity).openDrawer()
+        }
     }
 
 }

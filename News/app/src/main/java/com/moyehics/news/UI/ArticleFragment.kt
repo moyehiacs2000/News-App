@@ -21,12 +21,14 @@ class ArticleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentArticleBinding.inflate(inflater, container, false)
+
         val view = binding.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity()as MainActivity).closeDrawer()
         val article = args.article
         binding.webView.apply { 
             webViewClient = WebViewClient()
@@ -36,6 +38,7 @@ class ArticleFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        (requireActivity()as MainActivity).openDrawer()
     }
 
 }

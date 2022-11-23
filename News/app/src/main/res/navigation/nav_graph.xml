@@ -39,7 +39,9 @@
             app:destination="@id/forgotPasswordFragment" />
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -78,7 +80,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.moyehics.news.ui.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/nav_menu_home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_articleFragment"
@@ -87,7 +89,7 @@
     <fragment
         android:id="@+id/articleFragment"
         android:name="com.moyehics.news.ui.ArticleFragment"
-        android:label="fragment_article"
+        android:label="Article"
         tools:layout="@layout/fragment_article" >
         <argument
             android:name="article"

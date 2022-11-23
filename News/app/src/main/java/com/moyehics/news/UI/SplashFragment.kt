@@ -22,6 +22,7 @@ class SplashFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentSplashBinding.inflate(inflater,container,false)
+        (requireActivity()as MainActivity).closeDrawer()
         binding.newslogo.animate().alpha(1.0f).setDuration(3000).start()
         Handler(Looper.myLooper()!!).postDelayed({
                                                  findNavController().navigate(R.id.action_splashFragment_to_onboardingFragment)
@@ -33,6 +34,7 @@ class SplashFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+       // (requireActivity()as MainActivity).openDrawer()
     }
 
 }

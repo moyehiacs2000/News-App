@@ -60,7 +60,7 @@ class NewsAdapter(val context:Context): RecyclerView.Adapter<NewsAdapter.NewsVie
                 .into(imvNews)*/
             Glide.with(context).load(article.urlToImage).into(imvNews)
             txvAuther.text = article.author
-            txvSource.text = article.source.name
+            txvSource.text = article.source?.name
             txvTitle.text = article.title
             Log.d("NewsAdapter",article.title)
             txvTime.text = Utils.DateToTimeFormat(article.publishedAt)
