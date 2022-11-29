@@ -30,4 +30,7 @@ class AuthenticationViewModel @Inject constructor(
             _regiter.value=it
         }
     }
+    fun login(user: User){
+        
+    }
 }

@@ -7,6 +7,10 @@
             android:id="@+id/homeFragment"
             android:icon="@drawable/ic_home"
             android:title="@string/nav_menu_home" />
+        <item
+            android:id="@+id/savedFragment"
+            android:icon="@drawable/ic_save_filled"
+            android:title="@string/saved_articles" />
     </group>
 
 </menu>

@@ -2,11 +2,16 @@ package com.moyehics.news.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
+import androidx.navigation.fragment.findNavController
 import androidx.activity.viewModels
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.moyehics.news.R
@@ -31,8 +36,28 @@ class MainActivity : AppCompatActivity() {
         val appBarConfiguration = AppBarConfiguration(setOf(R.id.homeFragment),binding.drawerLayout)
         binding.activityMainToolbar.setupWithNavController(navController,appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+        binding.activityMainToolbar.inflateMenu(R.menu.options_menu)
+        binding.activityMainToolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.SearchOption ->{
+                    if (HomeFragment.searchPressedListener!=null){
+                        HomeFragment.searchPressedListener?.onSearchPressed()
+                    }
+                    true
+                }
+                R.id.Logout ->{
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+
 
     }
+
+
     fun closeDrawer(){
         supportActionBar?.hide()
         binding.activityMainToolbar.gone()

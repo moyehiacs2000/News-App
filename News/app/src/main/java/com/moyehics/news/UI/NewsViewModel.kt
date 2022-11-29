@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.moyehics.news.data.model.news.Article
 import com.moyehics.news.data.model.news.News
 import com.moyehics.news.data.repository.news.NewRepository
 import com.moyehics.news.util.Api
@@ -19,21 +20,23 @@ class NewsViewModel @Inject constructor(
     private var _news = MutableLiveData<UiState<News>>()
     var newsResponse : News ?= null
     var newsPage =1
+
+    var _searchNews = MutableLiveData<UiState<News>>()
+    var searchNewsResponse : News ?= null
+    var searchNewsPage =1
     init {
-        getNews("general", Api.API_kEY)
+        getNews("general")
     }
 
     val news : LiveData<UiState<News>>
         get()=_news
     fun getNews(
-        category:String,
-        key:String){
+        category:String){
         _news.value=UiState.Loding
         viewModelScope.launch {
             repository.getNews(
                 category,
-                newsPage,
-                key
+                newsPage
             ){
                 _news.postValue(handleNewsResponse(it))
             }
@@ -62,4 +65,52 @@ class NewsViewModel @Inject constructor(
             }
         }
     }
+
+    val searchNews : LiveData<UiState<News>>
+        get()=_searchNews
+    fun searchForNews(
+        q:String
+    ){
+        _searchNews.value=UiState.Loding
+        viewModelScope.launch {
+            repository.searchForNews(
+                q,
+                searchNewsPage
+            ){
+                _searchNews.postValue(handleSearchNewsResponse(it))
+            }
+        }
+    }
+
+    private fun handleSearchNewsResponse(it: UiState<News>): UiState<News>? {
+        when(it){
+            is UiState.Success ->{
+                it.data.let { resultResponse ->
+                    searchNewsPage++
+                    if(searchNewsResponse==null){
+                        searchNewsResponse = resultResponse
+                    }else{
+                        val oldArticles = searchNewsResponse?.articles
+                        val newArticles = resultResponse.articles
+                        oldArticles?.addAll(newArticles)
+                    }
+                    return UiState.Success(searchNewsResponse ?: resultResponse)
+                }
+
+            }
+            else -> {
+                return it
+            }
+        }
+    }
+
+    fun saveArticle(article: Article) = viewModelScope.launch {
+            repository.upsert(article)
+        }
+    fun deleteArticle(article: Article)=
+        viewModelScope.launch {
+            repository.deleteArticle(article)
+        }
+    fun getSavedNews()= repository.getSavedNews()
+
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -39,11 +40,12 @@ class NewsAdapter(val context:Context): RecyclerView.Adapter<NewsAdapter.NewsVie
         holder.itemView.setOnClickListener {
             onItemClickedListener?.let { it(article) }
         }
+        holder.setListeners()
     }
 
     override fun getItemCount(): Int =differ.currentList.size
 
-    inner class NewsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class NewsViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView),View.OnClickListener {
         private var currentPosition:Int = -1
         private var currentArticle : Article?=null
         private val imvNews=itemView.findViewById<ImageView>(R.id.news_image)
@@ -51,19 +53,49 @@ class NewsAdapter(val context:Context): RecyclerView.Adapter<NewsAdapter.NewsVie
         private val txvTitle=itemView.findViewById<TextView>(R.id.txv_title)
         private val txvSource=itemView.findViewById<TextView>(R.id.txv_source)
         private val txvTime=itemView.findViewById<TextView>(R.id.txv_time)
-
+        private val iconSave=itemView.findViewById<ImageView>(R.id.save_icon)
+        private val iconShare=itemView.findViewById<ImageView>(R.id.share_icon)
+        private val icSaveFilledImage = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_save_filled,null)
+        private val icSaveBorderImage = ResourcesCompat.getDrawable(context.resources, R.drawable.ic_save_border,null)
         fun setDat(article : Article,position: Int){
             this.currentPosition=position
             this.currentArticle=article
-            /*Picasso.get()
-                .load(article.urlToImage)
-                .into(imvNews)*/
             Glide.with(context).load(article.urlToImage).into(imvNews)
             txvAuther.text = article.author
             txvSource.text = article.source?.name
             txvTitle.text = article.title
-            Log.d("NewsAdapter",article.title)
             txvTime.text = Utils.DateToTimeFormat(article.publishedAt)
+            if(article.isSeved){
+                iconSave.setImageDrawable(icSaveFilledImage)
+            }else{
+                iconSave.setImageDrawable(icSaveBorderImage)
+            }
+        }
+        fun setListeners() {
+            iconSave.setOnClickListener(this@NewsViewHolder)
+            iconShare.setOnClickListener(this@NewsViewHolder)
+        }
+
+        override fun onClick(v: View?) {
+            when(v!!.id){
+                R.id.save_icon -> saveItem()
+                R.id.share_icon -> shareItem()
+            }
+        }
+
+        private fun shareItem() {
+            onShareClickedListener?.let { it(currentArticle!!) }
+        }
+
+        private fun saveItem() {
+            onSaveClickedListener?.let { it(currentArticle!!) }
+            currentArticle?.isSeved=!(currentArticle?.isSeved!!)
+            if(currentArticle?.isSeved!!){
+                iconSave.setImageDrawable(icSaveFilledImage)
+            }else{
+                iconSave.setImageDrawable(icSaveBorderImage)
+            }
+
         }
     }
     private var onItemClickedListener:((Article) -> Unit)?=null
@@ -71,4 +103,15 @@ class NewsAdapter(val context:Context): RecyclerView.Adapter<NewsAdapter.NewsVie
     fun setOnItemClicListener(listener:(Article) -> Unit){
         onItemClickedListener=listener
     }
+
+    private var onSaveClickedListener:((Article) -> Unit)?=null
+    fun setOnSaveClickedListener(listener:(Article) -> Unit){
+        onSaveClickedListener = listener
+    }
+
+    private var onShareClickedListener:((Article) -> Unit)?=null
+    fun setOnShareClickedListener(listener:(Article) -> Unit){
+        onShareClickedListener = listener
+    }
+
 }

@@ -11,4 +11,7 @@
     <string name="digits8">at lest 8 digits</string>
     <string name="invalid_email">Invalid Email</string>
     <string name="nav_menu_home">Home</string>
+    <string name="search">Search</string>
+    <string name="logout">Logout</string>
+    <string name="saved_articles">Saved Articles</string>
 </resources>

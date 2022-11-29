@@ -1,63 +1,73 @@
-package com.moyehics.news.ui
+package com.moyehics.news
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.AbsListView
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.moyehics.news.R
 import com.moyehics.news.adapter.NewsAdapter
 import com.moyehics.news.data.model.news.Article
-import com.moyehics.news.databinding.FragmentHomeBinding
+import com.moyehics.news.data.model.news.News
+import com.moyehics.news.databinding.FragmentSearchBinding
+import com.moyehics.news.ui.MainActivity
+import com.moyehics.news.ui.NewsViewModel
 import com.moyehics.news.util.*
-import com.moyehics.news.util.Constants.QUERY_PAGE_SIZE
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class HomeFragment : Fragment(), SearchPressedListener {
-    val TAG: String = "HomeFragment"
-    private var _binding: FragmentHomeBinding? = null
+
+class SearchFragment : Fragment() {
+    private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    lateinit var newsAdapter: NewsAdapter
+    private val TAG ="SearchFragment"
+    lateinit var searchNewsAdapter: NewsAdapter
     lateinit var viewModel: NewsViewModel
     private var pagination = false
-
-    companion object {
-        var searchPressedListener: SearchPressedListener? = null
-    }
-
+    private var toArticle=false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        (requireActivity()as MainActivity).closeDrawer()
+        val view = binding.root
+        return view
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.imageback.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
+        }
+        binding.inputSearch.requestFocus()
+        binding.inputSearch.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                searchText(binding.inputSearch.text.toString())
+                binding.inputSearch.onEditorAction(EditorInfo.IME_ACTION_DONE)
+                true
+            } else {
+                false
+            }
+        }
         viewModel = (activity as MainActivity).viewModel
+        Log.d(TAG,"onViewCreated")
         observer()
         setUpRecyclerView()
-        //viewModel.getNews("general", Api.API_kEY)
-        Log.d(TAG, viewModel.newsResponse?.articles?.size.toString())
-        newsAdapter.setOnItemClicListener {
+        searchNewsAdapter.setOnItemClicListener {
             val bundle = Bundle().apply {
                 putString("article", it.url)
-                putBoolean("from", true)
+                putBoolean("from",false)
             }
-            findNavController().navigate(R.id.action_homeFragment_to_articleFragment, bundle)
+            toArticle=true
+            findNavController().navigate(R.id.action_searchFragment_to_articleFragment, bundle)
         }
-        newsAdapter.setOnSaveClickedListener {
+        searchNewsAdapter.setOnSaveClickedListener {
             if (!(it.isSeved)) {
                 var temp = Article(
                     it.source,
@@ -77,23 +87,76 @@ class HomeFragment : Fragment(), SearchPressedListener {
                 Snackbar.make(view, "Article unsaved", Snackbar.LENGTH_SHORT).show()
             }
         }
-        newsAdapter.setOnShareClickedListener {
+        searchNewsAdapter.setOnShareClickedListener {
             toast("Share Item")
+        }
+    }
+
+    private fun searchText(query: String) {
+        if(query.isNotEmpty()){
+            viewModel.searchNewsResponse=null
+            viewModel.searchNewsPage = 1
+            viewModel.searchForNews(query)
+        }
+    }
+    private fun setUpRecyclerView() {
+        val context = requireContext()
+        searchNewsAdapter = NewsAdapter(context)
+        binding.searchRecyclerView?.adapter = searchNewsAdapter
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = RecyclerView.VERTICAL
+        binding.searchRecyclerView?.layoutManager = layoutManager
+        binding.searchRecyclerView.addOnScrollListener(this@SearchFragment.scrollListener)
+    }
+    private fun observer() {
+        viewModel.searchNews.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loding -> {
+                    if(!pagination) {
+                        binding.searchRecyclerView.gone()
+                        binding.shammerNewsRecyclerView.show()
+                    }
+                    if (pagination) {
+                        showProgressBar()
+                    }
+
+                }
+                is UiState.Failure -> {
+                    state.error?.let {
+                        if (viewModel.searchNewsPage>1){
+                            handleApiError()
+                        }else{
+                            toast(it)
+                        }
+                    }
+                }
+                is UiState.Success -> {
+                    searchNewsAdapter.differ.submitList(state.data.articles.toList())
+                    val totalPages = state.data.totalResults / Constants.QUERY_PAGE_SIZE + 2
+                    isLastPage = viewModel.searchNewsPage.toLong() == totalPages
+                    if(!pagination) {
+                        binding.searchRecyclerView.show()
+                        binding.shammerNewsRecyclerView.gone()
+                    }
+                    if(pagination) {
+                        hideProgressBar()
+                    }
+                }
+            }
         }
 
     }
-
-    private fun setUpRecyclerView() {
-        val context = requireContext()
-        newsAdapter = NewsAdapter(context)
-        binding.newsRecyclerView?.adapter = newsAdapter
-        val layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = RecyclerView.VERTICAL
-        binding.newsRecyclerView?.layoutManager = layoutManager
-        binding.newsRecyclerView.addOnScrollListener(this@HomeFragment.scrollListener)
-
+    private fun handleApiError() {
+        searchNewsAdapter.differ.submitList(viewModel.searchNewsResponse?.articles?.toList())
+        if(!pagination) {
+            binding.searchRecyclerView.show()
+            binding.shammerNewsRecyclerView.gone()
+        }
+        if(pagination) {
+            hideProgressBar()
+        }
+        isLastPage=true
     }
-
     private fun hideProgressBar() {
         binding.paginationProgressBar.hide()
         isLoading = false
@@ -104,59 +167,6 @@ class HomeFragment : Fragment(), SearchPressedListener {
         binding.paginationProgressBar.show()
         isLoading = true
     }
-
-    private fun observer() {
-        viewModel.news.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loding -> {
-                    if (!pagination) {
-                        binding.newsRecyclerView.gone()
-                        binding.shammerNewsRecyclerView.show()
-                    }
-                    if (pagination) {
-                        showProgressBar()
-                    }
-
-                }
-                is UiState.Failure -> {
-                    state.error?.let {
-                        if (viewModel.newsPage > 1) {
-                            handleApiError()
-                        } else {
-                            toast(it)
-                        }
-                    }
-                }
-                is UiState.Success -> {
-                    newsAdapter.differ.submitList(state.data.articles.toList())
-                    val totalPages = state.data.totalResults / QUERY_PAGE_SIZE + 1
-                    isLastPage = viewModel.newsPage.toLong() == totalPages
-                    if (!pagination) {
-                        binding.newsRecyclerView.show()
-                        binding.shammerNewsRecyclerView.gone()
-                    }
-                    if (pagination) {
-                        hideProgressBar()
-                    }
-                }
-            }
-        }
-
-    }
-
-    private fun handleApiError() {
-        newsAdapter.differ.submitList(viewModel.newsResponse?.articles?.toList())
-        if (!pagination) {
-            binding.newsRecyclerView.show()
-            binding.shammerNewsRecyclerView.gone()
-        }
-        if (pagination) {
-            hideProgressBar()
-        }
-        isLastPage = true
-    }
-
-
     private var isLoading = false
     private var isLastPage = false
     private var isScrolling = false
@@ -176,37 +186,31 @@ class HomeFragment : Fragment(), SearchPressedListener {
             val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
             val totalItemCount = layoutManager.itemCount
             val isNotLoadingAndNotLastPage = !isLoading && !isLastPage
-            val isAtLastItem = (lastVisibleItemPosition + 1) >= totalItemCount
+            val isAtLastItem = (lastVisibleItemPosition+1) >= totalItemCount
             val isNotAtBeginning = firstVisibleItemPosition >= 0
-            val isTotalMoreThanVisible = totalItemCount >= QUERY_PAGE_SIZE
+            val isTotalMoreThanVisible = totalItemCount >= Constants.QUERY_PAGE_SIZE
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning
                     && isTotalMoreThanVisible && isScrolling
             if (shouldPaginate) {
-                pagination = true
-                viewModel.getNews("general")
+                pagination =true
+                viewModel.searchForNews(binding.inputSearch.text.toString())
                 isScrolling = false
             }
 
         }
     }
-
     override fun onDestroyView() {
+        if(!toArticle){
+            viewModel.searchNewsResponse=null
+            viewModel.searchNewsPage = 1
+            viewModel._searchNews= MutableLiveData<UiState<News>>()
+            (requireActivity()as MainActivity).openDrawer()
+        }
+
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onPause() {
-        searchPressedListener = null
-        super.onPause()
-    }
-
-    override fun onResume() {
-        searchPressedListener = this
-        super.onResume()
-    }
-
-    override fun onSearchPressed() {
-        findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        toArticle=false
+        Log.d(TAG,"onDestroyView")
     }
 
 }

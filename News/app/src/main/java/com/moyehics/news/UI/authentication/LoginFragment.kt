@@ -1,7 +1,6 @@
 package com.moyehics.news.ui.authentication
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.databinding.FragmentLoginBinding
 import com.moyehics.news.ui.MainActivity
-import com.moyehics.news.util.UiState
+import com.moyehics.news.util.isValidEmail
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,12 +39,35 @@ class LoginFragment : Fragment() {
         }
         binding.loginButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            isLogin =true
+            isLogin = true
 
         }
 
     }
 
+    fun validation():Boolean{
+        var isValid = true
+        if(binding.emailEditeText.text.toString().isNullOrEmpty()){
+            isValid=false
+            binding.emailEditeText.error=getString(R.string.enter_email)
+        }else{
+            if(!binding.emailEditeText.text.toString().isValidEmail()){
+                isValid = false
+                binding.emailEditeText.error=getString(R.string.invalid_email)
+            }
+        }
+        if (binding.passwordEditeText.text.isNullOrEmpty()){
+            isValid = false
+            binding.passwordEditeText.error=getString(R.string.enter_password)
+        }else{
+            if (binding.passwordEditeText.text.toString().length<8){
+                isValid = false
+                binding.passwordEditeText.error=getString(R.string.digits8)
+
+            }
+        }
+        return isValid
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

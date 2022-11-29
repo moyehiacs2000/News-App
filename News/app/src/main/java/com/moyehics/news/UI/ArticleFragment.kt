@@ -16,6 +16,7 @@ class ArticleFragment : Fragment() {
     private var _binding:FragmentArticleBinding? = null
     private val binding get() = _binding!!
     val args : ArticleFragmentArgs by navArgs()
+    var from=false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +31,7 @@ class ArticleFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (requireActivity()as MainActivity).closeDrawer()
         val article = args.article
+        from=args.from
         binding.webView.apply { 
             webViewClient = WebViewClient()
             loadUrl(article)
@@ -38,7 +40,10 @@ class ArticleFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        (requireActivity()as MainActivity).openDrawer()
+        if(from){
+            (requireActivity()as MainActivity).openDrawer()
+        }
+
     }
 
 }
