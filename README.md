@@ -8,6 +8,7 @@ News app is android application built with kotlin to help users to get all types
   - Email/Password sign-in
   - Facebook sign-in
   - Google sign-in
+  - Reset user password
 - Get All Types of News 
 - Search For All Types of News
 - Save News in Local Database Using room 
