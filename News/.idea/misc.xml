@@ -7,9 +7,15 @@
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable-mdpi/searchitem_bg.xml" value="0.1905" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable-v24/button_round.xml" value="0.1915" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable-v24/ic_home.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1905" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable-xxhdpi/unselected.xml" value="0.1915" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_email.xml" value="0.1915" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_exit_24.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_launcher_foreground2.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_launcher_foreground3.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_launcher_foreground4.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_save.xml" value="0.1905" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_save_border.xml" value="0.1905" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_save_filled.xml" value="0.1905" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/drawable/ic_share.xml" value="0.1905" />
@@ -27,19 +33,23 @@
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_forgot_password.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_login.xml" value="0.2" />
-        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_onboarding.xml" value="0.40746500777604977" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_onboarding.xml" value="0.25" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_otp.xml" value="0.27291666666666664" />
-        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_register.xml" value="0.33" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_register.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_reset_password.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_saved.xml" value="0.25885416666666666" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_search.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/fragment_splash.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/image_placeholder.xml" value="0.24259259259259258" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/nav_header.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/news_card_item.xml" value="0.22" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/onbording_screen_item.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/shimmer_news_card_item.xml" value="0.22393162393162394" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/layout/test.xml" value="0.22393162393162394" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/menu/activity_main_drawer_items.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/menu/options_menu.xml" value="0.25885416666666666" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1905" />
+        <entry key="..\:/Users/MoYehiacs/AndroidStudioProjects/News/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1905" />
       </map>
     </option>
   </component>

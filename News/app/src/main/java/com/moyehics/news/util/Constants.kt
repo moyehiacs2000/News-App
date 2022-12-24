@@ -9,5 +9,7 @@ object Api{
 }
 object Constants{
     val QUERY_PAGE_SIZE = 20
+    val home = "HOME"
+    val save = "SAVE"
 }
 

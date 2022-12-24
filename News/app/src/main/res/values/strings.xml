@@ -14,4 +14,21 @@
     <string name="search">Search</string>
     <string name="logout">Logout</string>
     <string name="saved_articles">Saved Articles</string>
+
+
+
+    <string name="facebook_app_id">1371621516987533</string>
+    <string name="fb_login_protocol_scheme">fb967ef8bbc04061445c871571067b84e8</string>
+    <string name="facebook_client_token">3484d2f1e24a3982f9cc919261686c0f</string>
+
+    <string name="page1_title">Get All Types of News</string>
+    <string name="page1_desc">All Type of News From all Trusted Sources For all\nType of People</string>
+    <string name="page2_title">Get The Updated News</string>
+    <string name="page2_desc">Come on, get the latest and updated Articles Easily\nwith us every day</string>
+    <string name="page3_title">Search for News</string>
+    <string name="page3_desc">"You can search for All Type of News From\nall Trusted Sources"</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+
+
 </resources>

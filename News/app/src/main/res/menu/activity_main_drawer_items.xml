@@ -9,7 +9,7 @@
             android:title="@string/nav_menu_home" />
         <item
             android:id="@+id/savedFragment"
-            android:icon="@drawable/ic_save_filled"
+            android:icon="@drawable/ic_save"
             android:title="@string/saved_articles" />
     </group>
 

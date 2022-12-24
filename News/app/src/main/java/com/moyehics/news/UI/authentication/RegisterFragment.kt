@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.moyehics.news.R
 import com.moyehics.news.data.model.User
 import com.moyehics.news.databinding.FragmentRegisterBinding
@@ -31,6 +32,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity()as MainActivity).closeDrawer()
         observer()
         binding.registerButton.setOnClickListener {
             if(validation()){
@@ -104,7 +106,7 @@ class RegisterFragment : Fragment() {
                     binding.registerButton.show()
                     binding.progressBar.hide()
                     toast(state.data)
-
+                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 }
             }
         }

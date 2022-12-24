@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerDrawable
 import com.moyehics.news.R
 import com.moyehics.news.data.model.news.Article
 import com.moyehics.news.util.Utils
@@ -60,11 +62,11 @@ class NewsAdapter(val context:Context): RecyclerView.Adapter<NewsAdapter.NewsVie
         fun setDat(article : Article,position: Int){
             this.currentPosition=position
             this.currentArticle=article
-            Glide.with(context).load(article.urlToImage).into(imvNews)
+            Glide.with(context).load(article.urlToImage).placeholder(shimmerDrawable).error(R.drawable.error_image).into(imvNews)
             txvAuther.text = article.author
             txvSource.text = article.source?.name
             txvTitle.text = article.title
-            txvTime.text = Utils.DateToTimeFormat(article.publishedAt)
+            txvTime.text = Utils.DateToTimeFormat(article.publishedAt?:"2022-12-14T17:20:06Z")
             if(article.isSeved){
                 iconSave.setImageDrawable(icSaveFilledImage)
             }else{
@@ -112,6 +114,15 @@ class NewsAdapter(val context:Context): RecyclerView.Adapter<NewsAdapter.NewsVie
     private var onShareClickedListener:((Article) -> Unit)?=null
     fun setOnShareClickedListener(listener:(Article) -> Unit){
         onShareClickedListener = listener
+    }
+    private val shimmer = Shimmer.AlphaHighlightBuilder()
+        .setDuration(2000).setBaseAlpha(0.9f)
+        .setHighlightAlpha(0.8f)
+        .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
+        .setAutoStart(true)
+        .build()
+    val shimmerDrawable = ShimmerDrawable().apply {
+        setShimmer(shimmer)
     }
 
 }

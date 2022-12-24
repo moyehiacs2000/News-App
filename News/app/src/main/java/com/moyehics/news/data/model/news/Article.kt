@@ -7,14 +7,14 @@ import androidx.room.PrimaryKey
     tableName = "articles"
 )
 data class Article (
-    val source: Source?=null,
+    val source: Source? = null,
     val author: String? = null,
-    val title: String,
-    val description: String,
+    val title: String?  = null,
+    val description: String?  = null,
     @PrimaryKey
     val url: String,
-    val urlToImage: String? = null,
-    val publishedAt: String,
-    val content: String,
+    val urlToImage: String?  = null,
+    val publishedAt: String?  = null,
+    val content: String?  = null,
     var isSeved: Boolean = false
 )

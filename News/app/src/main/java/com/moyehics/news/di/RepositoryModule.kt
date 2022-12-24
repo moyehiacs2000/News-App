@@ -1,5 +1,6 @@
 package com.moyehics.news.di
 
+import com.facebook.CallbackManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.moyehics.news.data.repository.authentication.AuthenticationRepository
@@ -19,10 +20,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
-        database: FirebaseFirestore,
-        auth : FirebaseAuth
+        auth : FirebaseAuth,
     ): AuthenticationRepository {
-        return AuthenticationRepositoryImp(auth,database)
+        return AuthenticationRepositoryImp(auth)
     }
 
     @Provides

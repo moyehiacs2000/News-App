@@ -1,4 +1,4 @@
-package com.moyehics.news
+package com.moyehics.news.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -10,16 +10,17 @@ import android.widget.AbsListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.moyehics.news.R
 import com.moyehics.news.adapter.NewsAdapter
-import com.moyehics.news.data.model.news.Article
 import com.moyehics.news.data.model.news.News
 import com.moyehics.news.databinding.FragmentSearchBinding
-import com.moyehics.news.ui.MainActivity
-import com.moyehics.news.ui.NewsViewModel
 import com.moyehics.news.util.*
+import com.moyehics.news.util.Constants.home
+import com.moyehics.news.util.Constants.save
 
 
 class SearchFragment : Fragment() {
@@ -30,6 +31,8 @@ class SearchFragment : Fragment() {
     lateinit var viewModel: NewsViewModel
     private var pagination = false
     private var toArticle=false
+    val args : SearchFragmentArgs by navArgs()
+    private lateinit var from:String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,11 +45,12 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        from = args.from
         binding.imageback.setOnClickListener {
-            findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
+          back()
         }
         binding.inputSearch.requestFocus()
-        binding.inputSearch.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.inputSearch.setOnEditorActionListener { _, i, keyEvent ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 searchText(binding.inputSearch.text.toString())
                 binding.inputSearch.onEditorAction(EditorInfo.IME_ACTION_DONE)
@@ -56,7 +60,6 @@ class SearchFragment : Fragment() {
             }
         }
         viewModel = (activity as MainActivity).viewModel
-        Log.d(TAG,"onViewCreated")
         observer()
         setUpRecyclerView()
         searchNewsAdapter.setOnItemClicListener {
@@ -69,18 +72,7 @@ class SearchFragment : Fragment() {
         }
         searchNewsAdapter.setOnSaveClickedListener {
             if (!(it.isSeved)) {
-                var temp = Article(
-                    it.source,
-                    it.author,
-                    it.title,
-                    it.description,
-                    it.url,
-                    it.urlToImage,
-                    it.publishedAt,
-                    it.content,
-                    true
-                )
-                viewModel.saveArticle(temp)
+                viewModel.saveArticle(it)
                 Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
             } else {
                 viewModel.deleteArticle(it)
@@ -88,7 +80,7 @@ class SearchFragment : Fragment() {
             }
         }
         searchNewsAdapter.setOnShareClickedListener {
-            toast("Share Item")
+            (activity as MainActivity).shareData(it.url)
         }
     }
 
@@ -102,10 +94,10 @@ class SearchFragment : Fragment() {
     private fun setUpRecyclerView() {
         val context = requireContext()
         searchNewsAdapter = NewsAdapter(context)
-        binding.searchRecyclerView?.adapter = searchNewsAdapter
+        binding.searchRecyclerView.adapter = searchNewsAdapter
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
-        binding.searchRecyclerView?.layoutManager = layoutManager
+        binding.searchRecyclerView.layoutManager = layoutManager
         binding.searchRecyclerView.addOnScrollListener(this@SearchFragment.scrollListener)
     }
     private fun observer() {
@@ -125,8 +117,13 @@ class SearchFragment : Fragment() {
                     state.error?.let {
                         if (viewModel.searchNewsPage>1){
                             handleApiError()
-                        }else{
-                            toast(it)
+                        }
+                        toast(it)
+                        if (!pagination) {
+                            binding.shammerNewsRecyclerView.gone()
+                        }
+                        if(it=="No internet connection"){
+                            hideProgressBar()
                         }
                     }
                 }
@@ -199,6 +196,16 @@ class SearchFragment : Fragment() {
 
         }
     }
+    fun back(){
+        when(from){
+            home ->{
+                findNavController().navigate(R.id.action_searchFragment_to_homeFragment)
+            }
+            save ->{
+                findNavController().navigate(R.id.action_searchFragment_to_savedFragment)
+            }
+        }
+    }
     override fun onDestroyView() {
         if(!toArticle){
             viewModel.searchNewsResponse=null
@@ -210,7 +217,7 @@ class SearchFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         toArticle=false
-        Log.d(TAG,"onDestroyView")
+
     }
 
 }

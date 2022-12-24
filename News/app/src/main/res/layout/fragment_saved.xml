@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".SavedFragment">
+    tools:context=".ui.SavedFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/saved_news_recycler_view"

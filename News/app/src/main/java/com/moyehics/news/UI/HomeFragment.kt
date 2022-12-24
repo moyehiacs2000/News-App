@@ -11,28 +11,39 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.facebook.AccessToken
+import com.facebook.GraphRequest
+import com.facebook.HttpMethod
+import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.EmailAuthProvider
+import com.google.firebase.auth.FacebookAuthProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.moyehics.news.R
 import com.moyehics.news.adapter.NewsAdapter
 import com.moyehics.news.data.model.news.Article
 import com.moyehics.news.databinding.FragmentHomeBinding
 import com.moyehics.news.util.*
 import com.moyehics.news.util.Constants.QUERY_PAGE_SIZE
+import com.moyehics.news.util.Constants.home
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), SearchPressedListener {
+class HomeFragment : Fragment() {
     val TAG: String = "HomeFragment"
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     lateinit var newsAdapter: NewsAdapter
     lateinit var viewModel: NewsViewModel
+    lateinit var toolBar: MaterialToolbar
     private var pagination = false
-
-    companion object {
-        var searchPressedListener: SearchPressedListener? = null
-    }
-
+    lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var isLogout = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,9 +57,10 @@ class HomeFragment : Fragment(), SearchPressedListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = (activity as MainActivity).viewModel
+        toolBar = (activity as MainActivity).toolBar
         observer()
         setUpRecyclerView()
-        //viewModel.getNews("general", Api.API_kEY)
+
         Log.d(TAG, viewModel.newsResponse?.articles?.size.toString())
         newsAdapter.setOnItemClicListener {
             val bundle = Bundle().apply {
@@ -59,18 +71,7 @@ class HomeFragment : Fragment(), SearchPressedListener {
         }
         newsAdapter.setOnSaveClickedListener {
             if (!(it.isSeved)) {
-                var temp = Article(
-                    it.source,
-                    it.author,
-                    it.title,
-                    it.description,
-                    it.url,
-                    it.urlToImage,
-                    it.publishedAt,
-                    it.content,
-                    true
-                )
-                viewModel.saveArticle(temp)
+                viewModel.saveArticle(it)
                 Snackbar.make(view, "Article saved successfully", Snackbar.LENGTH_SHORT).show()
             } else {
                 viewModel.deleteArticle(it)
@@ -78,18 +79,38 @@ class HomeFragment : Fragment(), SearchPressedListener {
             }
         }
         newsAdapter.setOnShareClickedListener {
-            toast("Share Item")
+            (activity as MainActivity).shareData(it.url)
         }
-
+        toolBar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.SearchOption -> {
+                    val bundle = Bundle().apply {
+                        putString("from", home)
+                    }
+                    findNavController().navigate(R.id.action_homeFragment_to_searchFragment, bundle)
+                    true
+                }
+                R.id.Logout -> {
+                    if(!isLogout){
+                        logout()
+                        isLogout = true
+                    }
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     private fun setUpRecyclerView() {
         val context = requireContext()
         newsAdapter = NewsAdapter(context)
-        binding.newsRecyclerView?.adapter = newsAdapter
+        binding.newsRecyclerView.adapter = newsAdapter
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
-        binding.newsRecyclerView?.layoutManager = layoutManager
+        binding.newsRecyclerView.layoutManager = layoutManager
         binding.newsRecyclerView.addOnScrollListener(this@HomeFragment.scrollListener)
 
     }
@@ -120,10 +141,15 @@ class HomeFragment : Fragment(), SearchPressedListener {
                 }
                 is UiState.Failure -> {
                     state.error?.let {
-                        if (viewModel.newsPage > 1) {
+                        if (viewModel.newsPage > 1 && it != "No internet connection") {
                             handleApiError()
-                        } else {
-                            toast(it)
+                        }
+                        toast(it)
+                        if (!pagination) {
+                            binding.shammerNewsRecyclerView.gone()
+                        }
+                        if (it == "No internet connection") {
+                            hideProgressBar()
                         }
                     }
                 }
@@ -141,7 +167,6 @@ class HomeFragment : Fragment(), SearchPressedListener {
                 }
             }
         }
-
     }
 
     private fun handleApiError() {
@@ -190,23 +215,45 @@ class HomeFragment : Fragment(), SearchPressedListener {
         }
     }
 
+    private fun logout() {
+        var auth = FirebaseAuth.getInstance()
+        auth.currentUser.let {
+            for (profile in it!!.providerData) {
+                if (profile.providerId == GoogleAuthProvider.PROVIDER_ID) {
+                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build()
+                    mGoogleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+                    mGoogleSignInClient.signOut().addOnCompleteListener {
+                        auth.signOut()
+                        findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                    }
+                } else if (profile.providerId == EmailAuthProvider.PROVIDER_ID) {
+                    auth.signOut()
+                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+
+                }else if(profile.providerId == FacebookAuthProvider.PROVIDER_ID){
+                    var accessToken = AccessToken.getCurrentAccessToken()
+                    val request = GraphRequest.newGraphPathRequest(accessToken,
+                    "/me/permissions",
+                    GraphRequest.Callback {
+                        auth.signOut()
+                        LoginManager.getInstance().logOut()
+
+                    })
+                    request.httpMethod = HttpMethod.DELETE
+                    request.executeAsync()
+                    findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+                }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    override fun onPause() {
-        searchPressedListener = null
-        super.onPause()
-    }
-
-    override fun onResume() {
-        searchPressedListener = this
-        super.onResume()
-    }
-
-    override fun onSearchPressed() {
-        findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
-    }
 
 }

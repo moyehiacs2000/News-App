@@ -1,13 +1,16 @@
 package com.moyehics.news.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.ConnectivityManager.*
+import android.net.NetworkCapabilities.*
+import android.os.Build
+import androidx.lifecycle.*
+import com.moyehics.news.MyApplication
 import com.moyehics.news.data.model.news.Article
 import com.moyehics.news.data.model.news.News
 import com.moyehics.news.data.repository.news.NewRepository
-import com.moyehics.news.util.Api
 import com.moyehics.news.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsViewModel @Inject constructor(
-    val repository:NewRepository
-): ViewModel() {
+    val repository:NewRepository,
+    val app:Application
+): AndroidViewModel(app) {
     private var _news = MutableLiveData<UiState<News>>()
     var newsResponse : News ?= null
     var newsPage =1
@@ -34,11 +38,15 @@ class NewsViewModel @Inject constructor(
         category:String){
         _news.value=UiState.Loding
         viewModelScope.launch {
-            repository.getNews(
-                category,
-                newsPage
-            ){
-                _news.postValue(handleNewsResponse(it))
+            if(hasInternetConnection()) {
+                repository.getNews(
+                    category,
+                    newsPage
+                ) {
+                    _news.postValue(handleNewsResponse(it))
+                }
+            }else{
+                _news.postValue(UiState.Failure("No internet connection"))
             }
         }
 
@@ -72,13 +80,17 @@ class NewsViewModel @Inject constructor(
         q:String
     ){
         _searchNews.value=UiState.Loding
-        viewModelScope.launch {
-            repository.searchForNews(
-                q,
-                searchNewsPage
-            ){
-                _searchNews.postValue(handleSearchNewsResponse(it))
+        if(hasInternetConnection()) {
+            viewModelScope.launch {
+                repository.searchForNews(
+                    q,
+                    searchNewsPage
+                ) {
+                    _searchNews.postValue(handleSearchNewsResponse(it))
+                }
             }
+        }else{
+            _searchNews.postValue(UiState.Failure("No internet connection"))
         }
     }
 
@@ -112,5 +124,33 @@ class NewsViewModel @Inject constructor(
             repository.deleteArticle(article)
         }
     fun getSavedNews()= repository.getSavedNews()
+
+
+    private fun hasInternetConnection(): Boolean {
+        val connectivityManager = getApplication<MyApplication>().getSystemService(
+            Context.CONNECTIVITY_SERVICE
+        ) as ConnectivityManager
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val activeNetwork = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+            return when {
+                capabilities.hasTransport(TRANSPORT_WIFI) -> true
+                capabilities.hasTransport(TRANSPORT_CELLULAR) -> true
+                capabilities.hasTransport(TRANSPORT_ETHERNET) -> true
+                else -> false
+            }
+        } else {
+            connectivityManager.activeNetworkInfo?.run {
+                return when(type) {
+                    TYPE_WIFI -> true
+                    TYPE_MOBILE -> true
+                    TYPE_ETHERNET -> true
+                    else -> false
+                }
+            }
+        }
+        return false
+    }
+
 
 }

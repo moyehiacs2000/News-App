@@ -52,7 +52,18 @@ class NewRepositoryImp(
     }
 
     override suspend fun upsert(article: Article) {
-        roomDB.getArticleDao().upsert(article)
+        var temp = Article(
+            article.source,
+            article.author,
+            article.title,
+            article.description,
+            article.url,
+            article.urlToImage,
+            article.publishedAt,
+            article.content,
+            true
+        )
+        roomDB.getArticleDao().upsert(temp)
     }
 
     override suspend fun deleteArticle(article: Article) {
@@ -60,7 +71,7 @@ class NewRepositoryImp(
 
     }
 
-    override fun getSavedNews() = roomDB.getArticleDao().getAllArticles()
+    override   fun getSavedNews() = roomDB.getArticleDao().getAllArticles()
 
 
 

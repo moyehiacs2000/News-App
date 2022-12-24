@@ -1,7 +1,5 @@
 package com.moyehics.news.ui
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,41 +18,41 @@ class OnboardingFragment : Fragment() {
     private val binding get() = _binding!!
     var onBordiingViewPagerAdapter: OnBordiingViewPagerAdapter? = null
     var position = 0
-    var sharedPreferences:SharedPreferences?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentOnboardingBinding.inflate(inflater, container, false)
+        (requireActivity()as MainActivity).closeDrawer()
         val onBordingData: MutableList<OnBordingData> = ArrayList()
         onBordingData.add(
             OnBordingData(
-                "Get All Types of News",
-                "All Type of News From all Trusted Sources For all\nType of People",
+                getString(R.string.page1_title),
+                getString(R.string.page1_desc),
                 R.drawable.onbordimage1
             )
         )
         onBordingData.add(
             OnBordingData(
-                "Get The Updated News",
-                "Come on, get the latest and updated Articles Easily\nwith us every day",
+                getString(R.string.page2_title),
+                getString(R.string.page2_desc),
                 R.drawable.onbordimage2
             )
         )
         onBordingData.add(
             OnBordingData(
-                "Search for News",
-                "You can search for All Type of News From\nall Trusted Sources ",
+                getString(R.string.page3_title),
+                getString(R.string.page3_desc),
                 R.drawable.onbordimage3
             )
         )
         setOnBordingViewPagerAdapter(onBordingData)
         binding.txtNext.setOnClickListener {
-            position = binding.onbordingvp!!.currentItem
-            if(binding.txtNext.text.equals("Next")){
+            position = binding.onbordingvp.currentItem
+            if(binding.txtNext.text.equals(getString(R.string.next))){
                 if(position<onBordingData.size){
                     position++
-                    binding.onbordingvp!!.currentItem=position
+                    binding.onbordingvp.currentItem=position
                 }
                 if(position == onBordingData.size){
                     findNavController().navigate(R.id.action_onboardingFragment_to_loginFragment)
@@ -63,7 +61,9 @@ class OnboardingFragment : Fragment() {
 
 
         }
-        binding.txtSkip
+        binding.txtSkip.setOnClickListener {
+            findNavController().navigate(R.id.action_onboardingFragment_to_loginFragment)
+        }
         val view = binding.root
         return view
     }
@@ -71,20 +71,10 @@ class OnboardingFragment : Fragment() {
     private fun setOnBordingViewPagerAdapter(onBordingData: List<OnBordingData>) {
 
         onBordiingViewPagerAdapter = OnBordiingViewPagerAdapter(requireContext(), onBordingData)
-        binding.onbordingvp!!.adapter = onBordiingViewPagerAdapter
-        binding.tablayout?.setupWithViewPager(binding.onbordingvp)
+        binding.onbordingvp.adapter = onBordiingViewPagerAdapter
+        binding.tablayout.setupWithViewPager(binding.onbordingvp)
     }
-    private fun savePrefData(){
-        sharedPreferences = requireContext().getSharedPreferences("Setting",Context.MODE_PRIVATE)
-        val editor : SharedPreferences.Editor = sharedPreferences!!.edit()
-        editor.putBoolean("ISFirstTimerun",true)
-        editor.apply()
 
-    }
-    private fun restorPrefData() : Boolean{
-        sharedPreferences = requireContext().getSharedPreferences("Setting",Context.MODE_PRIVATE)
-        return sharedPreferences!!.getBoolean("ISFirstTimerun",false)
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
