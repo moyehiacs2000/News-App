@@ -35,3 +35,18 @@ News app is android application built with kotlin to help users to get all types
   ![ph5](https://user-images.githubusercontent.com/71784734/209449211-ce90fdee-9f75-4028-8ac3-0653586dcb98.png)
 
 
+
+#### Topics used for implementation.
+
+- kotlin
+- MVVM architecture
+- repository design pattern 
+- navigation component
+- dagger hilt
+- restful api
+- retrofit
+- Firebase Auth
+- Material Design
+- room database
+- webview
+- glid 
