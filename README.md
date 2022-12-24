@@ -46,6 +46,7 @@ News app is android application built with kotlin to help users to get all types
 - dagger hilt
 - restful api
 - retrofit
+- coroutines
 - Firebase Auth
 - Material Design
 - room database
