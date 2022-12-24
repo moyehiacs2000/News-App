@@ -1,2 +1,2 @@
 # News-App
-Get All Types of News From all Trusted Sources For all Types of People
+News app is android application to help users to get all types of news from all trusted sources for all types of people and get the latest and updated Articles Easily every day and they can search for all types of news from all trusted sources
