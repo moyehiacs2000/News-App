@@ -12,3 +12,8 @@ News app is android application built with kotlin to help users to get all types
 - Search For All Types of News
 - Save News in Local Database Using room 
 - Share News With implicit intents
+
+### 📱 App Screens
+- </B> **Splash Screen  Onboarding Screen** 
+  ![ph1](https://user-images.githubusercontent.com/71784734/209448924-d5b03631-31cf-4c89-a066-5df555268341.png)
+
