@@ -22,8 +22,12 @@ News app is android application built with kotlin to help users to get all types
   
   ![ph2](https://user-images.githubusercontent.com/71784734/209449021-e24d9911-c4b7-4aee-ab8b-faa9f46cd361.png)
   
-- </B> **Home Screen* 
+- </B> **Home Screen** 
 
   ![ph3](https://user-images.githubusercontent.com/71784734/209449083-b705d0ca-74e0-4056-afab-fe0bd5b60e78.png)
 
+- </B> **Search Screen and Article Screen**
+
+  ![ph4](https://user-images.githubusercontent.com/71784734/209449126-37cfdf83-5eef-413b-be19-c283f2b7ef4c.png)
+  
 
