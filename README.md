@@ -3,7 +3,7 @@ News app is android application built with kotlin to help users to get all types
 
 
 ## 🦾 Features
-- User-Friendly Android Application For All Types of Peopl.
+- User-Friendly Android Application For All Types of People.
 - Authentication System Using Firebase Contains
   - Email/Password sign-in
   - Facebook sign-in
