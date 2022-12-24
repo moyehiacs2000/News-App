@@ -30,4 +30,8 @@ News app is android application built with kotlin to help users to get all types
 
   ![ph4](https://user-images.githubusercontent.com/71784734/209449126-37cfdf83-5eef-413b-be19-c283f2b7ef4c.png)
   
+- </B> **Saved Articles Screen and Forgot Password Screen**
+  
+  ![ph5](https://user-images.githubusercontent.com/71784734/209449211-ce90fdee-9f75-4028-8ac3-0653586dcb98.png)
+
 
