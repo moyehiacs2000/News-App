@@ -52,4 +52,4 @@ News app is android application built with kotlin to help users to get all types
 - Material Design
 - room database
 - webview
-- glid 
+- glide 
