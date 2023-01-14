@@ -1,7 +1,8 @@
 # News-App
 News app is android application built with kotlin to help users to get all types of news from all trusted sources for all types of people and get the latest and updated articles easily every day and they can search for all types of news from all trusted sources and they can save and share news
 
-[Google Play Link](https://play.google.com/store/apps/details?id=com.moyehics.news).
+
+## ![google-play](https://user-images.githubusercontent.com/71784734/212448683-3af636e0-ea92-4f09-aca8-d7a1037221ff.png)  [Google Play Link](https://play.google.com/store/apps/details?id=com.moyehics.news)
 
 ## 🦾 Features
 - User-Friendly Android Application For All Types of People.
